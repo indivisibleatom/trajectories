@@ -1,5 +1,8 @@
 #include <cstdlib>
+#include <iostream>
 #include <list>
+
+#include <gtest/gtest.h>
 #include <Eigen/Core>
 #include "Trajectory.h"
 
@@ -16,7 +19,7 @@ void test(std::string name, std::list<Eigen::VectorXd> waypoints, double maxDevi
 	}
 }
 
-void test1() {
+TEST(SanityTest, test1) {
 	Eigen::VectorXd waypoint(4);
 	std::list<Eigen::VectorXd> waypoints;
 
@@ -33,7 +36,7 @@ void test1() {
 	test("Test 1", waypoints, 100.0, maxVelocities, maxAccelerations, 10.0);
 }
 
-void test2() {
+TEST(SanityTest, test2) {
 	Eigen::VectorXd waypoint(4);
 	std::list<Eigen::VectorXd> waypoints;
 
@@ -71,7 +74,7 @@ Eigen::VectorXd sampleConfig() {
 	return config;
 }
 
-void randomTests() {
+TEST(StressTest, randomTests) {
 	const int numIterations = 10000;
 
 	Eigen::VectorXd maxVelocities(7);
@@ -90,11 +93,7 @@ void randomTests() {
 	}
 }
 
-int main() {
-	test1();
-	test2();
-	randomTests();
-
-	std::cout << numTestsFailed << " out of " << numTests << " tests failed." << std::endl;
-	return 0;
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
